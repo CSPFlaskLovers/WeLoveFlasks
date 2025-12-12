@@ -211,7 +211,25 @@ class MatchmakingAPI:
             except Exception as e:
                 return {'message': f'Error deleting data: {str(e)}'}, 500
 
+    class _ALL_DATA(Resource):
+        @token_required()
+        def get(self):
+            """Get all users' profile data.
+            
+            Returns all profile setups including id, uid, created_at, and data for each user.
+            """
+            try:
+                setups = _read_profile_setups()
+                return {
+                    'message': 'All profile data',
+                    'total_users': len(setups),
+                    'setups': setups
+                }, 200
+            except Exception as e:
+                return {'message': f'Error retrieving all data: {str(e)}'}, 500
+
     api.add_resource(_DATA, '/data')
     api.add_resource(_WRITE, '/data')
     api.add_resource(_SETUP, '/setup')
     api.add_resource(_ADD, '/add')
+    api.add_resource(_ALL_DATA, '/all-data')
