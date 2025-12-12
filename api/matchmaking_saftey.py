@@ -276,7 +276,7 @@ class MatchmakingAPI:
 
 
     api.add_resource(_DATA, '/data')
-    api.add_resource(_WRITE, '/data')
+    api.add_resource(_WRITE, '/data-write')
     api.add_resource(_SETUP, '/setup')
     api.add_resource(_ADD, '/add')
     api.add_resource(_ALL_DATA, '/all-data')
