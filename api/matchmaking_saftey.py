@@ -1,7 +1,7 @@
 ## Create Users, Get User Data, Store Data, Change Data
 
 import jwt
-from flask import Blueprint, app, request, jsonify, current_app, Response, g
+from flask import Blueprint, app, request, jsonify, current_app, Response, g, Flask
 from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
 from __init__ import app
@@ -9,7 +9,8 @@ from api.jwt_authorize import token_required
 from model.user import User
 from model.matchmaking import profile_setup_exists, create_profile_setup, get_profile_setup, _read_profile_setups, _write_profile_setups
 from model.github import GitHubUser
-
+import os
+import json
 
 matchmaking_api = Blueprint('matchmaking_api', __name__,
                    url_prefix='/api/match')
@@ -228,8 +229,52 @@ class MatchmakingAPI:
             except Exception as e:
                 return {'message': f'Error retrieving all data: {str(e)}'}, 500
 
+    # Hi im adding things. remove this if it breaks, i need to go. will test this later.
+
+    class SaveProfileJSON(Resource):
+    @token_required()
+    def post(self):
+        """Save frontend quiz/profile data to the JSON file"""
+        current_user = g.current_user
+        uid = current_user.uid
+
+        body = request.get_json() or {}
+        profile_data = body.get('profile_data')
+        if not profile_data:
+            return {'message': 'No profile_data provided'}, 400
+
+        try:
+            setups = _read_profile_setups()
+
+            # Find or create user's setup
+            user_setup = next((s for s in setups if s['uid'] == uid), None)
+            if user_setup is None:
+                user_setup = create_profile_setup(uid)
+                setups = _read_profile_setups()  # refresh after creation
+                user_setup = next((s for s in setups if s['uid'] == uid), None)
+
+            if 'data' not in user_setup:
+                user_setup['data'] = {}
+
+            for item in profile_data:
+                q = item.get('question')
+                r = item.get('response')
+                if q:
+                    user_setup['data'][q] = r
+
+            _write_profile_setups(setups)
+            return {'message': f'Profile data saved for {uid}', 'setup': user_setup}, 201
+
+        except Exception as e:
+            return {'message': f'Error saving profile data: {str(e)}'}, 500
+
+
     api.add_resource(_DATA, '/data')
     api.add_resource(_WRITE, '/data')
     api.add_resource(_SETUP, '/setup')
     api.add_resource(_ADD, '/add')
     api.add_resource(_ALL_DATA, '/all-data')
+
+    # added this too
+    
+    api.add_resource(SaveProfileJSON, '/save-profile-json')
