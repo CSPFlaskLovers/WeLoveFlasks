@@ -231,7 +231,7 @@ class MatchmakingAPI:
 
     # Hi im adding things. remove this if it breaks, i need to go. will test this later.
 
-    class SaveProfileJSON(Resource):
+class SaveProfileJSON(Resource):
     @token_required()
     def post(self):
         """Save frontend quiz/profile data to the JSON file"""
@@ -276,5 +276,5 @@ class MatchmakingAPI:
     api.add_resource(_ALL_DATA, '/all-data')
 
     # added this too
-    
+
     api.add_resource(SaveProfileJSON, '/save-profile-json')
