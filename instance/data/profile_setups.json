@@ -61,5 +61,64 @@
       "What type of projects do you enjoy?": "Web development",
       "What programming language do you prefer?": "Python"
     }
+  },
+  {
+    "id": 5,
+    "uid": "testuser",
+    "created_at": "2026-01-09T22:13:32.255133",
+    "data": {
+      "profile_quiz": [
+        {
+          "question": "What is your favorite color?",
+          "response": "Orange",
+          "type": "multiple-choice"
+        },
+        {
+          "question": "What do you want your username to be?",
+          "response": "h",
+          "type": "text"
+        },
+        {
+          "question": "What's your favorite animal?",
+          "response": "Cats",
+          "type": "multiple-choice"
+        },
+        {
+          "question": "What is your full name?",
+          "response": null,
+          "type": "text"
+        },
+        {
+          "question": "What is your favorite genre of music?",
+          "response": "Pop",
+          "type": "multiple-choice"
+        },
+        {
+          "question": "What is your favorite band/musical artist?",
+          "response": "h",
+          "type": "text"
+        },
+        {
+          "question": "What is your SSN?",
+          "response": null,
+          "type": "text"
+        },
+        {
+          "question": "Where do you live?",
+          "response": null,
+          "type": "text"
+        },
+        {
+          "question": "What is your favorite subject?",
+          "response": "Science",
+          "type": "multiple-choice"
+        }
+      ],
+      "matched_with": [
+        "toby",
+        "toe",
+        "testuser"
+      ]
+    }
   }
 ]
